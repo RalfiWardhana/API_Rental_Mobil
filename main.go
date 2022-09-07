@@ -14,7 +14,7 @@ func main() {
 	fmt.Println(cfg)
 
 	routing.CarRoute(router)
-	routing.CarTypeTypeRoute(router)
+	routing.CarTypeRoute(router)
 	routing.StatusTypeRoute(router)
 	routing.TransactionRoute(router)
 	routing.UserTypeRoute(router)
