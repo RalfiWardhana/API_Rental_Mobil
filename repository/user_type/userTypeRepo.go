@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"rental/entity"
+	"rental/domain"
 	"time"
 )
 
@@ -18,7 +18,7 @@ func NewUserTypeRepository(db *sql.DB) UserTypeRepository {
 	}
 }
 
-func (r *repository) CreateUserType(userType entity.User_type) error {
+func (r *repository) CreateUserType(userType domain.User_type) error {
 	query := `
         INSERT INTO user_type (user_type) 
         VALUES (?)`
@@ -34,14 +34,14 @@ func (r *repository) CreateUserType(userType entity.User_type) error {
 	return nil
 }
 
-func (r *repository) FindAllUserType() ([]entity.User_type, error) {
+func (r *repository) FindAllUserType() ([]domain.User_type, error) {
 	query := `
 		SELECT id, user_type FROM user_type`
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	var users_type []entity.User_type
+	var users_type []domain.User_type
 
 	rows, err := r.db.QueryContext(ctx, query)
 	if err != nil {
@@ -50,7 +50,7 @@ func (r *repository) FindAllUserType() ([]entity.User_type, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var user_type entity.User_type
+		var user_type domain.User_type
 		err := rows.Scan(
 			&user_type.Id,
 			&user_type.User_type,
@@ -65,13 +65,13 @@ func (r *repository) FindAllUserType() ([]entity.User_type, error) {
 	return users_type, nil
 }
 
-func (r *repository) FindByIDUserType(id string) (entity.User_type, error) {
+func (r *repository) FindByIDUserType(id string) (domain.User_type, error) {
 	query := `
         SELECT id , user_type
         FROM user_type
         WHERE id = ?`
 
-	var user_type entity.User_type
+	var user_type domain.User_type
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -82,14 +82,14 @@ func (r *repository) FindByIDUserType(id string) (entity.User_type, error) {
 	)
 
 	if err != nil {
-		result := entity.User_type{}
+		result := domain.User_type{}
 		return result, err
 	}
 
 	return user_type, nil
 }
 
-func (r *repository) UpdateUserType(id string, user_type entity.User_type) (error, string) {
+func (r *repository) UpdateUserType(id string, user_type domain.User_type) (error, string) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
@@ -108,7 +108,7 @@ func (r *repository) UpdateUserType(id string, user_type entity.User_type) (erro
 	return nil, "Success to update id = " + string(rows)
 }
 
-func (r *repository) DeleteUserType(id string, user_type entity.User_type) (error, string) {
+func (r *repository) DeleteUserType(id string, user_type domain.User_type) (error, string) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 

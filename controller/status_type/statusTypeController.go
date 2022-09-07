@@ -1,7 +1,7 @@
 package statusType
 
 import (
-	"rental/entity"
+	"rental/domain"
 	statusType "rental/repository/status_type"
 
 	"github.com/gin-gonic/gin"
@@ -19,7 +19,7 @@ func NewStatusTypeController(cr statusType.StatusTypeRepository) StatusTypeContr
 
 func (cr *Controller) CreateStatusType(c *gin.Context) {
 
-	var StatusType entity.Status_type
+	var StatusType domain.Status_type
 
 	if err := c.ShouldBind(&StatusType); err != nil {
 		c.JSON(400, map[string]string{
@@ -83,8 +83,8 @@ func (cr *Controller) FindByIDStatusType(c *gin.Context) {
 }
 
 func (cr *Controller) UpdateStatusType(c *gin.Context) {
-	// entity user
-	var StatusType entity.Status_type
+	// domain user
+	var StatusType domain.Status_type
 	// param id
 	id := c.Param("id")
 	// request body
@@ -117,8 +117,8 @@ func (cr *Controller) UpdateStatusType(c *gin.Context) {
 }
 
 func (cr *Controller) DeleteStatusType(c *gin.Context) {
-	// entity user
-	StatusType := entity.Status_type{}
+	// domain user
+	StatusType := domain.Status_type{}
 	// param id
 	id := c.Param("id")
 

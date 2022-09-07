@@ -1,11 +1,11 @@
 package transaction
 
-import "rental/entity"
+import "rental/domain"
 
 type TransactionRepository interface {
-	CreateTransaction(transaction entity.Transaction) error
-	FindAllTransaction() ([]entity.Transaction_get, error)
-	FindByIDTransaction(id string) (entity.Transaction_get, error)
-	UpdateTransaction(id string, transaction entity.Transaction) (error, string)
-	DeleteTransaction(id string, transaction entity.Transaction) (error, string)
+	CreateTransaction(transaction domain.Transaction) error
+	FindAllTransaction() ([]domain.Transaction_get, error)
+	FindByIDTransaction(id string) (domain.Transaction_get, error)
+	UpdateTransaction(id string, transaction domain.Transaction) (error, string)
+	DeleteTransaction(id string, transaction domain.Transaction) (error, string)
 }

@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"rental/entity"
+	"rental/domain"
 	"time"
 )
 
@@ -18,7 +18,7 @@ func NewCarTypeRepository(db *sql.DB) CarTypeRepository {
 	}
 }
 
-func (r *repository) CreateCarType(carType entity.Car_type) error {
+func (r *repository) CreateCarType(carType domain.Car_type) error {
 	query := `
         INSERT INTO car_type (car_type) 
         VALUES (?)`
@@ -34,14 +34,14 @@ func (r *repository) CreateCarType(carType entity.Car_type) error {
 	return nil
 }
 
-func (r *repository) FindAllCarType() ([]entity.Car_type, error) {
+func (r *repository) FindAllCarType() ([]domain.Car_type, error) {
 	query := `
 		SELECT id, car_type FROM car_type`
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	var Cars_type []entity.Car_type
+	var Cars_type []domain.Car_type
 
 	rows, err := r.db.QueryContext(ctx, query)
 	if err != nil {
@@ -50,7 +50,7 @@ func (r *repository) FindAllCarType() ([]entity.Car_type, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var Car_type entity.Car_type
+		var Car_type domain.Car_type
 		err := rows.Scan(
 			&Car_type.Id,
 			&Car_type.Car_type,
@@ -65,13 +65,13 @@ func (r *repository) FindAllCarType() ([]entity.Car_type, error) {
 	return Cars_type, nil
 }
 
-func (r *repository) FindByIDCarType(id string) (entity.Car_type, error) {
+func (r *repository) FindByIDCarType(id string) (domain.Car_type, error) {
 	query := `
         SELECT id , car_type
         FROM car_type
         WHERE id = ?`
 
-	var Car_type entity.Car_type
+	var Car_type domain.Car_type
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -82,14 +82,14 @@ func (r *repository) FindByIDCarType(id string) (entity.Car_type, error) {
 	)
 
 	if err != nil {
-		result := entity.Car_type{}
+		result := domain.Car_type{}
 		return result, err
 	}
 
 	return Car_type, nil
 }
 
-func (r *repository) UpdateCarType(id string, car_type entity.Car_type) (error, string) {
+func (r *repository) UpdateCarType(id string, car_type domain.Car_type) (error, string) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
@@ -108,7 +108,7 @@ func (r *repository) UpdateCarType(id string, car_type entity.Car_type) (error, 
 	return nil, "Success to update id = " + string(rows)
 }
 
-func (r *repository) DeleteCarType(id string, car_type entity.Car_type) (error, string) {
+func (r *repository) DeleteCarType(id string, car_type domain.Car_type) (error, string) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 

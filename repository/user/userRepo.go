@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"rental/entity"
+	"rental/domain"
 	"time"
 )
 
@@ -18,7 +18,7 @@ func NewUserRepository(db *sql.DB) UserRepository {
 	}
 }
 
-func (r *repository) CreateUser(user entity.User) error {
+func (r *repository) CreateUser(user domain.User) error {
 	query := `
         INSERT INTO user (username, email, password, id_type_user) 
         VALUES (?, ?, ?, ?)`
@@ -34,7 +34,7 @@ func (r *repository) CreateUser(user entity.User) error {
 	return nil
 }
 
-func (r *repository) FindAllUser() ([]entity.User, error) {
+func (r *repository) FindAllUser() ([]domain.User, error) {
 	query := `
 	SELECT u.id, u.username, u.email, u.password, ut.user_type
 	FROM user u
@@ -43,7 +43,7 @@ func (r *repository) FindAllUser() ([]entity.User, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	var users []entity.User
+	var users []domain.User
 
 	rows, err := r.db.QueryContext(ctx, query)
 	if err != nil {
@@ -52,7 +52,7 @@ func (r *repository) FindAllUser() ([]entity.User, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var user entity.User
+		var user domain.User
 		err := rows.Scan(
 			&user.Id,
 			&user.Username,
@@ -70,14 +70,14 @@ func (r *repository) FindAllUser() ([]entity.User, error) {
 	return users, nil
 }
 
-func (r *repository) FindByIDUser(id string) (entity.User, error) {
+func (r *repository) FindByIDUser(id string) (domain.User, error) {
 	query := `
         SELECT u.id, u.username, u.email, u.password, ut.user_type
         FROM user u
 		JOIN user_type ut ON u.id_type_user = ut.id
         WHERE id = ?`
 
-	var user entity.User
+	var user domain.User
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -91,14 +91,14 @@ func (r *repository) FindByIDUser(id string) (entity.User, error) {
 	)
 
 	if err != nil {
-		result := entity.User{}
+		result := domain.User{}
 		return result, err
 	}
 
 	return user, nil
 }
 
-func (r *repository) UpdateUser(id string, user entity.User) (error, string) {
+func (r *repository) UpdateUser(id string, user domain.User) (error, string) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
@@ -117,7 +117,7 @@ func (r *repository) UpdateUser(id string, user entity.User) (error, string) {
 	return nil, "Success to update id = " + string(rows)
 }
 
-func (r *repository) DeleteUser(id string, user entity.User) (error, string) {
+func (r *repository) DeleteUser(id string, user domain.User) (error, string) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 

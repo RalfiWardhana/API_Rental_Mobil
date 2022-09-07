@@ -1,4 +1,4 @@
-package entity
+package domain
 
 type Transaction struct {
 	Id          int

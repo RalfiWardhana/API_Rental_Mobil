@@ -1,7 +1,7 @@
 package userType
 
 import (
-	"rental/entity"
+	"rental/domain"
 	userType "rental/repository/user_type"
 
 	"github.com/gin-gonic/gin"
@@ -19,7 +19,7 @@ func NewUserTypeController(cr userType.UserTypeRepository) UserTypeController {
 
 func (cr *Controller) CreateUserType(c *gin.Context) {
 
-	var UserType entity.User_type
+	var UserType domain.User_type
 
 	if err := c.ShouldBind(&UserType); err != nil {
 		c.JSON(400, map[string]string{
@@ -83,8 +83,8 @@ func (cr *Controller) FindByIDUserType(c *gin.Context) {
 }
 
 func (cr *Controller) UpdateUserType(c *gin.Context) {
-	// entity user
-	var UserType entity.User_type
+	// domain user
+	var UserType domain.User_type
 	// param id
 	id := c.Param("id")
 	// request body
@@ -117,8 +117,8 @@ func (cr *Controller) UpdateUserType(c *gin.Context) {
 }
 
 func (cr *Controller) DeleteUserType(c *gin.Context) {
-	// entity user
-	UserType := entity.User_type{}
+	// domain user
+	UserType := domain.User_type{}
 	// param id
 	id := c.Param("id")
 

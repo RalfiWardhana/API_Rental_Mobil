@@ -1,11 +1,11 @@
 package user
 
-import "rental/entity"
+import "rental/domain"
 
 type UserRepository interface {
-	CreateUser(user entity.User) error
-	FindAllUser() ([]entity.User, error)
-	FindByIDUser(id string) (entity.User, error)
-	UpdateUser(id string, user entity.User) (error, string)
-	DeleteUser(id string, user entity.User) (error, string)
+	CreateUser(user domain.User) error
+	FindAllUser() ([]domain.User, error)
+	FindByIDUser(id string) (domain.User, error)
+	UpdateUser(id string, user domain.User) (error, string)
+	DeleteUser(id string, user domain.User) (error, string)
 }

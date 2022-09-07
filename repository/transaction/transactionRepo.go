@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"rental/entity"
+	"rental/domain"
 	"time"
 )
 
@@ -18,7 +18,7 @@ func NewTransactionRepository(db *sql.DB) TransactionRepository {
 	}
 }
 
-func (r *repository) CreateTransaction(transaction entity.Transaction) error {
+func (r *repository) CreateTransaction(transaction domain.Transaction) error {
 	query := `
         INSERT INTO transaction (id_car, id_user, total_price, duration, status) 
         VALUES (?, ?, ?, ?, ?)`
@@ -34,7 +34,7 @@ func (r *repository) CreateTransaction(transaction entity.Transaction) error {
 	return nil
 }
 
-func (r *repository) FindAllTransaction() ([]entity.Transaction_get, error) {
+func (r *repository) FindAllTransaction() ([]domain.Transaction_get, error) {
 	query := `
 	SELECT t.id, u.username,u.email, c.car_name, c.cc, t.total_price, t.duration, t.status  FROM transaction t
 	JOIN car c ON c.id = t.id_car
@@ -44,7 +44,7 @@ func (r *repository) FindAllTransaction() ([]entity.Transaction_get, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	var Transactions []entity.Transaction_get
+	var Transactions []domain.Transaction_get
 
 	rows, err := r.db.QueryContext(ctx, query)
 	if err != nil {
@@ -53,7 +53,7 @@ func (r *repository) FindAllTransaction() ([]entity.Transaction_get, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var Transaction entity.Transaction_get
+		var Transaction domain.Transaction_get
 		err := rows.Scan(
 			&Transaction.Id,
 			&Transaction.Username,
@@ -74,14 +74,14 @@ func (r *repository) FindAllTransaction() ([]entity.Transaction_get, error) {
 	return Transactions, nil
 }
 
-func (r *repository) FindByIDTransaction(id string) (entity.Transaction_get, error) {
+func (r *repository) FindByIDTransaction(id string) (domain.Transaction_get, error) {
 	query := `
 	SELECT t.id, u.username,u.email, c.car_name, c.cc, t.total_price, t.duration, t.status  FROM transaction t
 	JOIN car c ON c.id = t.id_car
 	JOIN user u ON  u.id = t.id_user
-    WHERE id = ?`
+    WHERE t.id = ?`
 
-	var Transaction entity.Transaction_get
+	var Transaction domain.Transaction_get
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -98,14 +98,14 @@ func (r *repository) FindByIDTransaction(id string) (entity.Transaction_get, err
 	)
 
 	if err != nil {
-		result := entity.Transaction_get{}
+		result := domain.Transaction_get{}
 		return result, err
 	}
 
 	return Transaction, nil
 }
 
-func (r *repository) UpdateTransaction(id string, transaction entity.Transaction) (error, string) {
+func (r *repository) UpdateTransaction(id string, transaction domain.Transaction) (error, string) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
@@ -124,7 +124,7 @@ func (r *repository) UpdateTransaction(id string, transaction entity.Transaction
 	return nil, "Success to update id = " + string(rows)
 }
 
-func (r *repository) DeleteTransaction(id string, transaction entity.Transaction) (error, string) {
+func (r *repository) DeleteTransaction(id string, transaction domain.Transaction) (error, string) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 

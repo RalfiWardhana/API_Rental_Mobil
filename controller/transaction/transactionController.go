@@ -1,7 +1,7 @@
 package transaction
 
 import (
-	"rental/entity"
+	"rental/domain"
 	"rental/repository/transaction"
 
 	"github.com/gin-gonic/gin"
@@ -19,7 +19,7 @@ func NewTransactionController(cr transaction.TransactionRepository) TransactionC
 
 func (cr *Controller) CreateTransaction(c *gin.Context) {
 
-	var Transaction entity.Transaction
+	var Transaction domain.Transaction
 
 	if err := c.ShouldBind(&Transaction); err != nil {
 		c.JSON(400, map[string]string{
@@ -111,8 +111,8 @@ func (cr *Controller) FindByIDTransaction(c *gin.Context) {
 }
 
 func (cr *Controller) UpdateTransaction(c *gin.Context) {
-	// entity user
-	var Transaction entity.Transaction
+	// domain user
+	var Transaction domain.Transaction
 	// param id
 	id := c.Param("id")
 	// request body
@@ -174,8 +174,8 @@ func (cr *Controller) UpdateTransaction(c *gin.Context) {
 }
 
 func (cr *Controller) DeleteTransaction(c *gin.Context) {
-	// entity user
-	Transaction := entity.Transaction{}
+	// domain user
+	Transaction := domain.Transaction{}
 	// param id
 	id := c.Param("id")
 

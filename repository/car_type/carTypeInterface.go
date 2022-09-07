@@ -1,11 +1,11 @@
 package carType
 
-import "rental/entity"
+import "rental/domain"
 
 type CarTypeRepository interface {
-	CreateCarType(car_type entity.Car_type) error
-	FindAllCarType() ([]entity.Car_type, error)
-	FindByIDCarType(id string) (entity.Car_type, error)
-	UpdateCarType(id string, car_type entity.Car_type) (error, string)
-	DeleteCarType(id string, car_type entity.Car_type) (error, string)
+	CreateCarType(car_type domain.Car_type) error
+	FindAllCarType() ([]domain.Car_type, error)
+	FindByIDCarType(id string) (domain.Car_type, error)
+	UpdateCarType(id string, car_type domain.Car_type) (error, string)
+	DeleteCarType(id string, car_type domain.Car_type) (error, string)
 }

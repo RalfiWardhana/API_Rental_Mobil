@@ -1,7 +1,7 @@
 package carType
 
 import (
-	"rental/entity"
+	"rental/domain"
 	carType "rental/repository/car_type"
 
 	"github.com/gin-gonic/gin"
@@ -19,7 +19,7 @@ func NewCarTypeController(cr carType.CarTypeRepository) CarTypeController {
 
 func (cr *Controller) CreateCarType(c *gin.Context) {
 
-	var carType entity.Car_type
+	var carType domain.Car_type
 
 	if err := c.ShouldBind(&carType); err != nil {
 		c.JSON(400, map[string]string{
@@ -83,8 +83,8 @@ func (cr *Controller) FindByIDCarType(c *gin.Context) {
 }
 
 func (cr *Controller) UpdateCarType(c *gin.Context) {
-	// entity user
-	var carType entity.Car_type
+	// domain user
+	var carType domain.Car_type
 	// param id
 	id := c.Param("id")
 	// request body
@@ -117,8 +117,8 @@ func (cr *Controller) UpdateCarType(c *gin.Context) {
 }
 
 func (cr *Controller) DeleteCarType(c *gin.Context) {
-	// entity user
-	carType := entity.Car_type{}
+	// domain user
+	carType := domain.Car_type{}
 	// param id
 	id := c.Param("id")
 

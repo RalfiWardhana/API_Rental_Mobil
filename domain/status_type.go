@@ -1,4 +1,4 @@
-package entity
+package domain
 
 type Status_type struct {
 	Id          int

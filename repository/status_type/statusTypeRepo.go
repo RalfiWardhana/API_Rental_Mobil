@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"rental/entity"
+	"rental/domain"
 	"time"
 )
 
@@ -18,7 +18,7 @@ func NewStatusTypeRepository(db *sql.DB) StatusTypeRepository {
 	}
 }
 
-func (r *repository) CreateStatusType(statusType entity.Status_type) error {
+func (r *repository) CreateStatusType(statusType domain.Status_type) error {
 	query := `
         INSERT INTO status_type (status) 
         VALUES (?)`
@@ -34,14 +34,14 @@ func (r *repository) CreateStatusType(statusType entity.Status_type) error {
 	return nil
 }
 
-func (r *repository) FindAllStatusType() ([]entity.Status_type, error) {
+func (r *repository) FindAllStatusType() ([]domain.Status_type, error) {
 	query := `
 		SELECT id, status_type FROM status_type`
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	var Statuss_type []entity.Status_type
+	var Statuss_type []domain.Status_type
 
 	rows, err := r.db.QueryContext(ctx, query)
 	if err != nil {
@@ -50,7 +50,7 @@ func (r *repository) FindAllStatusType() ([]entity.Status_type, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var Status_type entity.Status_type
+		var Status_type domain.Status_type
 		err := rows.Scan(
 			&Status_type.Id,
 			&Status_type.Status_type,
@@ -65,13 +65,13 @@ func (r *repository) FindAllStatusType() ([]entity.Status_type, error) {
 	return Statuss_type, nil
 }
 
-func (r *repository) FindByIDStatusType(id string) (entity.Status_type, error) {
+func (r *repository) FindByIDStatusType(id string) (domain.Status_type, error) {
 	query := `
         SELECT id , status_type
         FROM status_type
         WHERE id = ?`
 
-	var Status_type entity.Status_type
+	var Status_type domain.Status_type
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -82,14 +82,14 @@ func (r *repository) FindByIDStatusType(id string) (entity.Status_type, error) {
 	)
 
 	if err != nil {
-		result := entity.Status_type{}
+		result := domain.Status_type{}
 		return result, err
 	}
 
 	return Status_type, nil
 }
 
-func (r *repository) UpdateStatusType(id string, status_type entity.Status_type) (error, string) {
+func (r *repository) UpdateStatusType(id string, status_type domain.Status_type) (error, string) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
@@ -108,7 +108,7 @@ func (r *repository) UpdateStatusType(id string, status_type entity.Status_type)
 	return nil, "Success to update id = " + string(rows)
 }
 
-func (r *repository) DeleteStatusType(id string, status_type entity.Status_type) (error, string) {
+func (r *repository) DeleteStatusType(id string, status_type domain.Status_type) (error, string) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 

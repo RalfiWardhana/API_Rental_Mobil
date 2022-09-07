@@ -1,7 +1,7 @@
 package car
 
 import (
-	"rental/entity"
+	"rental/domain"
 	"rental/repository/car"
 
 	"github.com/gin-gonic/gin"
@@ -19,7 +19,7 @@ func NewCarController(cr car.CarRepository) CarController {
 
 func (cr *Controller) CreateCar(c *gin.Context) {
 
-	var car entity.Car
+	var car domain.Car
 
 	if err := c.ShouldBind(&car); err != nil {
 		c.JSON(400, map[string]string{
@@ -118,8 +118,8 @@ func (cr *Controller) FindByIDCar(c *gin.Context) {
 }
 
 func (cr *Controller) UpdateCar(c *gin.Context) {
-	// entity user
-	var car entity.Car
+	// domain user
+	var car domain.Car
 	// param id
 	id := c.Param("id")
 	// request body
@@ -187,8 +187,8 @@ func (cr *Controller) UpdateCar(c *gin.Context) {
 }
 
 func (cr *Controller) DeleteCar(c *gin.Context) {
-	// entity user
-	car := entity.Car{}
+	// domain user
+	car := domain.Car{}
 	// param id
 	id := c.Param("id")
 
