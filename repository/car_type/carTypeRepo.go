@@ -68,8 +68,8 @@ func (r *repository) FindAllCarType() ([]entity.Car_type, error) {
 func (r *repository) FindByIDCarType(id string) (entity.Car_type, error) {
 	query := `
         SELECT id , car_type
-        FROM Car
-        WHERE id = $1`
+        FROM car_type
+        WHERE id = ?`
 
 	var Car_type entity.Car_type
 

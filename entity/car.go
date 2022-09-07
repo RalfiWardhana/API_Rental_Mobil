@@ -11,6 +11,16 @@ type Car struct {
 	Price       int
 }
 
+type Car_get struct {
+	Id       int
+	Car_name string
+	Cc       int
+	Capacity int
+	Total    int
+	Car_type string
+	Price    int
+}
+
 type Car_type struct {
 	Id       int
 	Car_type string

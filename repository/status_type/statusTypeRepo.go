@@ -67,9 +67,9 @@ func (r *repository) FindAllStatusType() ([]entity.Status_type, error) {
 
 func (r *repository) FindByIDStatusType(id string) (entity.Status_type, error) {
 	query := `
-        SELECT id , Status_type
-        FROM Status
-        WHERE id = $1`
+        SELECT id , status_type
+        FROM status_type
+        WHERE id = ?`
 
 	var Status_type entity.Status_type
 
@@ -112,7 +112,7 @@ func (r *repository) DeleteStatusType(id string, status_type entity.Status_type)
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	query := `DELETE from Status_type WHERE id=?`
+	query := `DELETE from status_type WHERE id=?`
 	result, err := r.db.ExecContext(ctx, query, id)
 	if err != nil {
 		return err, "Fail to delete"

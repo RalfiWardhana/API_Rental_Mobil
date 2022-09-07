@@ -68,8 +68,8 @@ func (r *repository) FindAllUserType() ([]entity.User_type, error) {
 func (r *repository) FindByIDUserType(id string) (entity.User_type, error) {
 	query := `
         SELECT id , user_type
-        FROM user
-        WHERE id = $1`
+        FROM user_type
+        WHERE id = ?`
 
 	var user_type entity.User_type
 

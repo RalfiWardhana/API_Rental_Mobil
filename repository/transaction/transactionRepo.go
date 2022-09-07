@@ -34,7 +34,7 @@ func (r *repository) CreateTransaction(transaction entity.Transaction) error {
 	return nil
 }
 
-func (r *repository) FindAllTransaction() ([]entity.Transaction, error) {
+func (r *repository) FindAllTransaction() ([]entity.Transaction_get, error) {
 	query := `
 	SELECT t.id, u.username,u.email, c.car_name, c.cc, t.total_price, t.duration, t.status  FROM transaction t
 	JOIN car c ON c.id = t.id_car
@@ -44,7 +44,7 @@ func (r *repository) FindAllTransaction() ([]entity.Transaction, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	var Transactions []entity.Transaction
+	var Transactions []entity.Transaction_get
 
 	rows, err := r.db.QueryContext(ctx, query)
 	if err != nil {
@@ -53,7 +53,7 @@ func (r *repository) FindAllTransaction() ([]entity.Transaction, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var Transaction entity.Transaction
+		var Transaction entity.Transaction_get
 		err := rows.Scan(
 			&Transaction.Id,
 			&Transaction.Username,
@@ -74,14 +74,14 @@ func (r *repository) FindAllTransaction() ([]entity.Transaction, error) {
 	return Transactions, nil
 }
 
-func (r *repository) FindByIDTransaction(id string) (entity.Transaction, error) {
+func (r *repository) FindByIDTransaction(id string) (entity.Transaction_get, error) {
 	query := `
 	SELECT t.id, u.username,u.email, c.car_name, c.cc, t.total_price, t.duration, t.status  FROM transaction t
 	JOIN car c ON c.id = t.id_car
 	JOIN user u ON  u.id = t.id_user
-    WHERE id = $1`
+    WHERE id = ?`
 
-	var Transaction entity.Transaction
+	var Transaction entity.Transaction_get
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -98,7 +98,7 @@ func (r *repository) FindByIDTransaction(id string) (entity.Transaction, error) 
 	)
 
 	if err != nil {
-		result := entity.Transaction{}
+		result := entity.Transaction_get{}
 		return result, err
 	}
 

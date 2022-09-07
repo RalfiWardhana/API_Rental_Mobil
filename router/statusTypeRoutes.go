@@ -14,9 +14,9 @@ func StatusTypeRoute(router *gin.Engine) {
 	repoStatusType := repoStatusType.NewStatusTypeRepository(db)
 	contStatusType := contStatusType.NewStatusTypeController(repoStatusType)
 
-	router.GET("/StatusTypes", contStatusType.FindAllStatusType)
-	router.GET("/StatusType/:id", contStatusType.FindByIDStatusType)
-	router.POST("/StatusType", contStatusType.CreateStatusType)
-	router.PUT("/StatusType/:id", contStatusType.UpdateStatusType)
-	router.DELETE("/StatusType/:id", contStatusType.DeleteStatusType)
+	router.GET("/statusTypes", contStatusType.FindAllStatusType)
+	router.GET("/statusType/:id", contStatusType.FindByIDStatusType)
+	router.POST("/statusType", contStatusType.CreateStatusType)
+	router.PUT("/statusType/:id", contStatusType.UpdateStatusType)
+	router.DELETE("/statusType/:id", contStatusType.DeleteStatusType)
 }

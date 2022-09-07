@@ -34,7 +34,7 @@ func (r *repository) CreateCar(car entity.Car) error {
 	return nil
 }
 
-func (r *repository) FindAllCar() ([]entity.Car, error) {
+func (r *repository) FindAllCar() ([]entity.Car_get, error) {
 	query := `
 	SELECT c.id, c.car_name, c.cc, c.capacity, c.total, c.price, ct.car_type
 	FROM car c
@@ -43,7 +43,7 @@ func (r *repository) FindAllCar() ([]entity.Car, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	var Cars []entity.Car
+	var Cars []entity.Car_get
 
 	rows, err := r.db.QueryContext(ctx, query)
 	if err != nil {
@@ -52,7 +52,7 @@ func (r *repository) FindAllCar() ([]entity.Car, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var Car entity.Car
+		var Car entity.Car_get
 		err := rows.Scan(
 			&Car.Id,
 			&Car.Car_name,
@@ -72,14 +72,14 @@ func (r *repository) FindAllCar() ([]entity.Car, error) {
 	return Cars, nil
 }
 
-func (r *repository) FindByIDCar(id string) (entity.Car, error) {
+func (r *repository) FindByIDCar(id string) (entity.Car_get, error) {
 	query := `
 	SELECT c.id, c.car_name, c.cc, c.capacity, c.total, c.price, ct.car_type
 	FROM car c
 	JOIN car_type ct ON c.id_Car_type = ct.id
-    WHERE id = $1`
+    WHERE c.id = ?`
 
-	var Car entity.Car
+	var Car entity.Car_get
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -95,7 +95,7 @@ func (r *repository) FindByIDCar(id string) (entity.Car, error) {
 	)
 
 	if err != nil {
-		result := entity.Car{}
+		result := entity.Car_get{}
 		return result, err
 	}
 

@@ -41,6 +41,7 @@ func (cr *Controller) CreateStatusType(c *gin.Context) {
 		c.JSON(500, map[string]any{
 			"error": err.Error(),
 		})
+		return
 	}
 
 	c.JSON(201, map[string]any{
@@ -72,6 +73,7 @@ func (cr *Controller) FindByIDStatusType(c *gin.Context) {
 		c.JSON(500, map[string]any{
 			"error": err.Error(),
 		})
+		return
 	}
 
 	c.JSON(200, map[string]any{

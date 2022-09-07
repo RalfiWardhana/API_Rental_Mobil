@@ -14,9 +14,9 @@ func UserTypeRoute(router *gin.Engine) {
 	repoUserType := repoUserType.NewUserTypeRepository(db)
 	contUserType := contUserType.NewUserTypeController(repoUserType)
 
-	router.GET("/UserTypes", contUserType.FindAllUserType)
-	router.GET("/UserType/:id", contUserType.FindByIDUserType)
-	router.POST("/UserType", contUserType.CreateUserType)
-	router.PUT("/UserType/:id", contUserType.UpdateUserType)
-	router.DELETE("/UserType/:id", contUserType.DeleteUserType)
+	router.GET("/userTypes", contUserType.FindAllUserType)
+	router.GET("/userType/:id", contUserType.FindByIDUserType)
+	router.POST("/userType", contUserType.CreateUserType)
+	router.PUT("/userType/:id", contUserType.UpdateUserType)
+	router.DELETE("/userType/:id", contUserType.DeleteUserType)
 }

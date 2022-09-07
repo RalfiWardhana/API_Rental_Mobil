@@ -75,7 +75,7 @@ func (r *repository) FindByIDUser(id string) (entity.User, error) {
         SELECT u.id, u.username, u.email, u.password, ut.user_type
         FROM user u
 		JOIN user_type ut ON u.id_type_user = ut.id
-        WHERE id = $1`
+        WHERE id = ?`
 
 	var user entity.User
 
