@@ -94,7 +94,7 @@ func (r *repository) UpdateCarType(id string, car_type domain.Car_type) (error, 
 	defer cancel()
 
 	query := `UPDATE Car_type set Car_type=? WHERE id=?`
-	result, err := r.db.ExecContext(ctx, query, car_type.Car_type, car_type.Id)
+	result, err := r.db.ExecContext(ctx, query, car_type.Car_type, id)
 	if err != nil {
 		return err, "Fail to update"
 	}
@@ -105,7 +105,7 @@ func (r *repository) UpdateCarType(id string, car_type domain.Car_type) (error, 
 	}
 
 	fmt.Printf("Affected update : %d", rows)
-	return nil, "Success to update id = " + string(rows)
+	return nil, "Success to update id = " + id
 }
 
 func (r *repository) DeleteCarType(id string, car_type domain.Car_type) (error, string) {
@@ -123,5 +123,5 @@ func (r *repository) DeleteCarType(id string, car_type domain.Car_type) (error, 
 		return err, "Fail to delete"
 	}
 	fmt.Printf("Affected delete : %d", rows)
-	return nil, "Success to delete id = " + string(rows)
+	return nil, "Success to delete id = " + id
 }

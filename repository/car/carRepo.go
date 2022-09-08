@@ -21,7 +21,7 @@ func NewCarRepository(db *sql.DB) CarRepository {
 func (r *repository) CreateCar(car domain.Car) error {
 	query := `
         INSERT INTO car (car_name, cc, capacity, total, price, id_car_type) 
-        VALUES (?, ?, ?, ?, ?)`
+        VALUES (?, ?, ?, ?, ?, ?)`
 
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
@@ -103,11 +103,12 @@ func (r *repository) FindByIDCar(id string) (domain.Car_get, error) {
 }
 
 func (r *repository) UpdateCar(id string, car domain.Car) (error, string) {
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
 
-	query := `UPDATE car set car_name=?, cc=?, capacity=?, total=?, price = ?, id_car_type =? WHERE id=?`
-	result, err := r.db.ExecContext(ctx, query, car.Car_name, car.Cc, car.Capacity, car.Total, car.Price, car.Id_car_type, car.Id)
+	query := `UPDATE car SET car_name=?, cc=?, capacity=?, total=?, price = ?, id_car_type =? WHERE id=?`
+	result, err := r.db.ExecContext(ctx, query, car.Car_name, car.Cc, car.Capacity, car.Total, car.Price, car.Id_car_type, id)
+
 	if err != nil {
 		return err, "Fail to update"
 	}
@@ -116,9 +117,8 @@ func (r *repository) UpdateCar(id string, car domain.Car) (error, string) {
 	if err != nil {
 		return err, "Fail to update"
 	}
-
 	fmt.Printf("Affected update : %d", rows)
-	return nil, "success to update id = " + string(rows)
+	return nil, "success to update id = " + id
 }
 
 func (r *repository) DeleteCar(id string, car domain.Car) (error, string) {
@@ -136,5 +136,5 @@ func (r *repository) DeleteCar(id string, car domain.Car) (error, string) {
 		return err, "Fail to delete"
 	}
 	fmt.Printf("Affected delete : %d", rows)
-	return nil, "Success to delete id = " + string(rows)
+	return nil, "Success to delete id = " + id
 }

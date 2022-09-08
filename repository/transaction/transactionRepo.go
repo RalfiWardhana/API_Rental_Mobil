@@ -110,7 +110,7 @@ func (r *repository) UpdateTransaction(id string, transaction domain.Transaction
 	defer cancel()
 
 	query := `UPDATE transaction set id_car=?, id_user=?, total_price=?, duration=?, status =? WHERE id=?`
-	result, err := r.db.ExecContext(ctx, query, transaction.Id_car, transaction.Id_user, transaction.Total_price, transaction.Duration, transaction.Status, transaction.Id)
+	result, err := r.db.ExecContext(ctx, query, transaction.Id_car, transaction.Id_user, transaction.Total_price, transaction.Duration, transaction.Status, id)
 	if err != nil {
 		return err, "Fail to update"
 	}
@@ -121,7 +121,7 @@ func (r *repository) UpdateTransaction(id string, transaction domain.Transaction
 	}
 
 	fmt.Printf("Affected update : %d", rows)
-	return nil, "Success to update id = " + string(rows)
+	return nil, "Success to update id = " + id
 }
 
 func (r *repository) DeleteTransaction(id string, transaction domain.Transaction) (error, string) {
@@ -139,5 +139,5 @@ func (r *repository) DeleteTransaction(id string, transaction domain.Transaction
 		return err, "Fail to delete"
 	}
 	fmt.Printf("Affected delete : %d", rows)
-	return nil, "Success to delete id = " + string(rows)
+	return nil, "Success to delete id = " + id
 }

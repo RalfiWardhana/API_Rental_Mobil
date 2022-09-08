@@ -94,7 +94,7 @@ func (r *repository) UpdateUserType(id string, user_type domain.User_type) (erro
 	defer cancel()
 
 	query := `UPDATE user_type set user_type=? WHERE id=?`
-	result, err := r.db.ExecContext(ctx, query, user_type.User_type, user_type.Id)
+	result, err := r.db.ExecContext(ctx, query, user_type.User_type, id)
 	if err != nil {
 		return err, "Fail to update"
 	}
@@ -105,7 +105,7 @@ func (r *repository) UpdateUserType(id string, user_type domain.User_type) (erro
 	}
 
 	fmt.Printf("Affected update : %d", rows)
-	return nil, "Success to update id = " + string(rows)
+	return nil, "Success to update id = " + id
 }
 
 func (r *repository) DeleteUserType(id string, user_type domain.User_type) (error, string) {
@@ -123,5 +123,5 @@ func (r *repository) DeleteUserType(id string, user_type domain.User_type) (erro
 		return err, "Fail to delete"
 	}
 	fmt.Printf("Affected delete : %d", rows)
-	return nil, "Success to delete id = " + string(rows)
+	return nil, "Success to delete id = " + id
 }

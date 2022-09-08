@@ -20,7 +20,7 @@ func NewStatusTypeRepository(db *sql.DB) StatusTypeRepository {
 
 func (r *repository) CreateStatusType(statusType domain.Status_type) error {
 	query := `
-        INSERT INTO status_type (status) 
+        INSERT INTO status_type (status_type) 
         VALUES (?)`
 
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
@@ -94,7 +94,7 @@ func (r *repository) UpdateStatusType(id string, status_type domain.Status_type)
 	defer cancel()
 
 	query := `UPDATE status_type set status_type=? WHERE id=?`
-	result, err := r.db.ExecContext(ctx, query, status_type.Status_type, status_type.Id)
+	result, err := r.db.ExecContext(ctx, query, status_type.Status_type, id)
 	if err != nil {
 		return err, "Fail to update"
 	}
@@ -105,7 +105,7 @@ func (r *repository) UpdateStatusType(id string, status_type domain.Status_type)
 	}
 
 	fmt.Printf("Affected update : %d", rows)
-	return nil, "Success to update id = " + string(rows)
+	return nil, "Success to update id = " + id
 }
 
 func (r *repository) DeleteStatusType(id string, status_type domain.Status_type) (error, string) {
@@ -123,5 +123,5 @@ func (r *repository) DeleteStatusType(id string, status_type domain.Status_type)
 		return err, "Fail to delete"
 	}
 	fmt.Printf("Affected delete : %d", rows)
-	return nil, "Success to delete id = " + string(rows)
+	return nil, "Success to delete id = " + id
 }
