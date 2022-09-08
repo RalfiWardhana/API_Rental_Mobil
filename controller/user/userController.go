@@ -152,6 +152,8 @@ func (cr *Controller) UpdateUser(c *gin.Context) {
 	}
 
 	// update user
+	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(User.Password), bcrypt.DefaultCost)
+	User.Password = string(hashedPassword)
 	err, message := cr.cr.UpdateUser(id, User)
 	if err != nil {
 		c.JSON(500, map[string]any{
