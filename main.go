@@ -18,6 +18,7 @@ func main() {
 	routing.StatusTypeRoute(router)
 	routing.TransactionRoute(router)
 	routing.UserTypeRoute(router)
+	routing.UserRoute(router)
 
 	router.Run("localhost:9000")
 

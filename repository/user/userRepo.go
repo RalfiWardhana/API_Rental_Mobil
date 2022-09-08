@@ -20,7 +20,7 @@ func NewUserRepository(db *sql.DB) UserRepository {
 
 func (r *repository) CreateUser(user domain.User) error {
 	query := `
-        INSERT INTO user (username, email, password, id_type_user) 
+        INSERT INTO user (username, email, password, id_user_type) 
         VALUES (?, ?, ?, ?)`
 
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
@@ -34,16 +34,16 @@ func (r *repository) CreateUser(user domain.User) error {
 	return nil
 }
 
-func (r *repository) FindAllUser() ([]domain.User, error) {
+func (r *repository) FindAllUser() ([]domain.User_get, error) {
 	query := `
 	SELECT u.id, u.username, u.email, u.password, ut.user_type
 	FROM user u
-	JOIN user_type ut ON u.id_type_user = ut.id`
+	JOIN user_type ut ON u.id_user_type = ut.id`
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	var users []domain.User
+	var users []domain.User_get
 
 	rows, err := r.db.QueryContext(ctx, query)
 	if err != nil {
@@ -52,7 +52,7 @@ func (r *repository) FindAllUser() ([]domain.User, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var user domain.User
+		var user domain.User_get
 		err := rows.Scan(
 			&user.Id,
 			&user.Username,
@@ -70,14 +70,14 @@ func (r *repository) FindAllUser() ([]domain.User, error) {
 	return users, nil
 }
 
-func (r *repository) FindByIDUser(id string) (domain.User, error) {
+func (r *repository) FindByIDUser(id string) (domain.User_get, error) {
 	query := `
         SELECT u.id, u.username, u.email, u.password, ut.user_type
         FROM user u
-		JOIN user_type ut ON u.id_type_user = ut.id
-        WHERE id = ?`
+		JOIN user_type ut ON u.id_user_type = ut.id
+        WHERE u.id = ?`
 
-	var user domain.User
+	var user domain.User_get
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -91,7 +91,7 @@ func (r *repository) FindByIDUser(id string) (domain.User, error) {
 	)
 
 	if err != nil {
-		result := domain.User{}
+		result := domain.User_get{}
 		return result, err
 	}
 
@@ -103,7 +103,7 @@ func (r *repository) UpdateUser(id string, user domain.User) (error, string) {
 	defer cancel()
 
 	query := `UPDATE user set username=?, email=?, password=?, id_user_type=? WHERE id=?`
-	result, err := r.db.ExecContext(ctx, query, user.Username, user.Email, user.Password, user.Id_user_type, user.Id)
+	result, err := r.db.ExecContext(ctx, query, user.Username, user.Email, user.Password, user.Id_user_type, id)
 	if err != nil {
 		return err, "Fail to update"
 	}
@@ -114,7 +114,7 @@ func (r *repository) UpdateUser(id string, user domain.User) (error, string) {
 	}
 
 	fmt.Printf("Affected update : %d", rows)
-	return nil, "Success to update id = " + string(rows)
+	return nil, "Success to update id = " + id
 }
 
 func (r *repository) DeleteUser(id string, user domain.User) (error, string) {
@@ -132,5 +132,5 @@ func (r *repository) DeleteUser(id string, user domain.User) (error, string) {
 		return err, "Fail to delete"
 	}
 	fmt.Printf("Affected delete : %d", rows)
-	return nil, "Success to delete id = " + string(rows)
+	return nil, "Success to delete id = " + id
 }

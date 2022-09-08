@@ -9,6 +9,14 @@ type User struct {
 	User_type    string
 }
 
+type User_get struct {
+	Id        int
+	Username  string
+	Email     string
+	Password  string
+	User_type string
+}
+
 type User_type struct {
 	Id        int
 	User_type string
