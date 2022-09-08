@@ -30,7 +30,25 @@ func (cr *Controller) CreateUser(c *gin.Context) {
 
 	if User.Username == "" {
 		c.JSON(400, map[string]string{
-			"message": "User name required",
+			"message": "Username required",
+		})
+		return
+	}
+	if User.Email == "" {
+		c.JSON(400, map[string]string{
+			"message": "Email required",
+		})
+		return
+	}
+	if User.Password == "" {
+		c.JSON(400, map[string]string{
+			"message": "Password required",
+		})
+		return
+	}
+	if User.Id_user_type == 0 {
+		c.JSON(400, map[string]string{
+			"message": "Id type user required",
 		})
 		return
 	}
@@ -94,9 +112,28 @@ func (cr *Controller) UpdateUser(c *gin.Context) {
 		})
 		return
 	}
+
 	if User.Username == "" {
 		c.JSON(400, map[string]string{
-			"message": "User name required",
+			"message": "Username required",
+		})
+		return
+	}
+	if User.Email == "" {
+		c.JSON(400, map[string]string{
+			"message": "Email required",
+		})
+		return
+	}
+	if User.Password == "" {
+		c.JSON(400, map[string]string{
+			"message": "Password required",
+		})
+		return
+	}
+	if User.Id_user_type == 0 {
+		c.JSON(400, map[string]string{
+			"message": "Id type user required",
 		})
 		return
 	}
