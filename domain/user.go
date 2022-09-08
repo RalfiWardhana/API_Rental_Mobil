@@ -21,3 +21,5 @@ type User_type struct {
 	Id        int
 	User_type string
 }
+
+var PrivateKey = []byte("SuperSecretKey")

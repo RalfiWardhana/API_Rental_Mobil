@@ -10,4 +10,5 @@ type UserController interface {
 	FindByIDUser(c *gin.Context)
 	UpdateUser(c *gin.Context)
 	DeleteUser(c *gin.Context)
+	Login(c *gin.Context)
 }

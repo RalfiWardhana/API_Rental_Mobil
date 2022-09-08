@@ -3,8 +3,11 @@ package user
 import (
 	"rental/domain"
 	user "rental/repository/user"
+	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v4"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type Controller struct {
@@ -52,6 +55,16 @@ func (cr *Controller) CreateUser(c *gin.Context) {
 		})
 		return
 	}
+	emails, _ := cr.cr.FindByEmailUser(User.Email)
+	if emails.Email == User.Email {
+		c.JSON(400, map[string]string{
+			"message": "Email already registered",
+		})
+		return
+	}
+
+	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(User.Password), bcrypt.DefaultCost)
+	User.Password = string(hashedPassword)
 
 	err := cr.cr.CreateUser(User)
 
@@ -171,5 +184,49 @@ func (cr *Controller) DeleteUser(c *gin.Context) {
 	// return success delete user
 	c.JSON(200, map[string]any{
 		"message": message,
+	})
+}
+
+func (cr *Controller) Login(c *gin.Context) {
+	var userRequest domain.User
+	err := c.ShouldBind(&userRequest)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": "invalid input",
+		})
+		return
+	}
+	if userRequest.Email == "" || userRequest.Password == "" {
+		c.JSON(400, gin.H{
+			"message": "email/password required",
+		})
+		return
+	}
+
+	User, err := cr.cr.FindByEmailUser(userRequest.Email)
+	if err != nil || User.Id == 0 {
+		c.JSON(400, gin.H{
+			"message": "wrong email/password",
+		})
+		return
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(User.Password), []byte(userRequest.Password))
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": "wrong email/password",
+		})
+		return
+	}
+
+	claims := jwt.MapClaims{
+		"user_id": User.Id,
+		"exp":     time.Now().Add(24 * time.Hour).Unix(),
+		"iss":     "edspert",
+	}
+	tkn := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	token, _ := tkn.SignedString(domain.PrivateKey)
+	c.JSON(200, gin.H{
+		"token": token,
 	})
 }
