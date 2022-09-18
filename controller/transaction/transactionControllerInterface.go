@@ -10,4 +10,5 @@ type TransactionController interface {
 	FindByIDTransaction(c *gin.Context)
 	UpdateTransaction(c *gin.Context)
 	DeleteTransaction(c *gin.Context)
+	UpdateTransactionPayment(c *gin.Context)
 }

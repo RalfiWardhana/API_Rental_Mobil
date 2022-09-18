@@ -114,7 +114,7 @@ func (cr *Controller) FindByIDUser(c *gin.Context) {
 }
 
 func (cr *Controller) UpdateUser(c *gin.Context) {
-	// domain user
+
 	var User domain.User
 	// param id
 	id := c.Param("id")
@@ -151,7 +151,6 @@ func (cr *Controller) UpdateUser(c *gin.Context) {
 		return
 	}
 
-	// update user
 	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(User.Password), bcrypt.DefaultCost)
 	User.Password = string(hashedPassword)
 	err, message := cr.cr.UpdateUser(id, User)
@@ -162,19 +161,18 @@ func (cr *Controller) UpdateUser(c *gin.Context) {
 		})
 		return
 	}
-	// return success update user
+
 	c.JSON(200, map[string]any{
 		"message": message,
 	})
 }
 
 func (cr *Controller) DeleteUser(c *gin.Context) {
-	// domain user
+
 	User := domain.User{}
 	// param id
 	id := c.Param("id")
 
-	// delete user
 	err, message := cr.cr.DeleteUser(id, User)
 	if err != nil {
 		c.JSON(500, map[string]any{
@@ -183,7 +181,7 @@ func (cr *Controller) DeleteUser(c *gin.Context) {
 		})
 		return
 	}
-	// return success delete user
+
 	c.JSON(200, map[string]any{
 		"message": message,
 	})

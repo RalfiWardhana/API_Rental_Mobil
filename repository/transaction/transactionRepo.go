@@ -141,3 +141,22 @@ func (r *repository) DeleteTransaction(id string, transaction domain.Transaction
 	fmt.Printf("Affected delete : %d", rows)
 	return nil, "Success to delete id = " + id
 }
+
+func (r *repository) UpdateTransactionPayment(id string, transaction domain.Transaction_payment) (error, string) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	query := `UPDATE transaction set payment = ? WHERE id=?`
+	result, err := r.db.ExecContext(ctx, query, transaction.Payment, id)
+	if err != nil {
+		return err, "Fail to update"
+	}
+
+	rows, err := result.RowsAffected()
+	if err != nil {
+		return err, "Fail to update"
+	}
+
+	fmt.Printf("Affected update : %d", rows)
+	return nil, "Success to update id = " + id
+}

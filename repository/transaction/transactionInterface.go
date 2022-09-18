@@ -8,4 +8,5 @@ type TransactionRepository interface {
 	FindByIDTransaction(id string) (domain.Transaction_get, error)
 	UpdateTransaction(id string, transaction domain.Transaction) (error, string)
 	DeleteTransaction(id string, transaction domain.Transaction) (error, string)
+	UpdateTransactionPayment(id string, transaction domain.Transaction_payment) (error, string)
 }

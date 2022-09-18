@@ -83,7 +83,7 @@ func (cr *Controller) FindByIDStatusType(c *gin.Context) {
 }
 
 func (cr *Controller) UpdateStatusType(c *gin.Context) {
-	// domain user
+
 	var StatusType domain.Status_type
 	// param id
 	id := c.Param("id")
@@ -101,7 +101,6 @@ func (cr *Controller) UpdateStatusType(c *gin.Context) {
 		return
 	}
 
-	// update user
 	err, message := cr.cr.UpdateStatusType(id, StatusType)
 	if err != nil {
 		c.JSON(500, map[string]any{
@@ -110,19 +109,18 @@ func (cr *Controller) UpdateStatusType(c *gin.Context) {
 		})
 		return
 	}
-	// return success update user
+
 	c.JSON(200, map[string]any{
 		"message": message,
 	})
 }
 
 func (cr *Controller) DeleteStatusType(c *gin.Context) {
-	// domain user
+
 	StatusType := domain.Status_type{}
 	// param id
 	id := c.Param("id")
 
-	// delete user
 	err, message := cr.cr.DeleteStatusType(id, StatusType)
 	if err != nil {
 		c.JSON(500, map[string]any{
@@ -131,7 +129,7 @@ func (cr *Controller) DeleteStatusType(c *gin.Context) {
 		})
 		return
 	}
-	// return success delete user
+
 	c.JSON(200, map[string]any{
 		"message": message,
 	})

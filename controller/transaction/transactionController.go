@@ -111,7 +111,7 @@ func (cr *Controller) FindByIDTransaction(c *gin.Context) {
 }
 
 func (cr *Controller) UpdateTransaction(c *gin.Context) {
-	// domain user
+
 	var Transaction domain.Transaction
 	// param id
 	id := c.Param("id")
@@ -158,7 +158,6 @@ func (cr *Controller) UpdateTransaction(c *gin.Context) {
 		return
 	}
 
-	// update user
 	err, message := cr.cr.UpdateTransaction(id, Transaction)
 	if err != nil {
 		c.JSON(500, map[string]any{
@@ -167,19 +166,17 @@ func (cr *Controller) UpdateTransaction(c *gin.Context) {
 		})
 		return
 	}
-	// return success update user
 	c.JSON(200, map[string]any{
 		"message": message,
 	})
 }
 
 func (cr *Controller) DeleteTransaction(c *gin.Context) {
-	// domain user
+
 	Transaction := domain.Transaction{}
 	// param id
 	id := c.Param("id")
 
-	// delete user
 	err, message := cr.cr.DeleteTransaction(id, Transaction)
 	if err != nil {
 		c.JSON(500, map[string]any{
@@ -188,7 +185,33 @@ func (cr *Controller) DeleteTransaction(c *gin.Context) {
 		})
 		return
 	}
-	// return success delete user
+
+	c.JSON(200, map[string]any{
+		"message": message,
+	})
+}
+
+func (cr *Controller) UpdateTransactionPayment(c *gin.Context) {
+	// param id
+	id := c.Param("id")
+
+	file, _ := c.FormFile("Payment")
+	Transaction := domain.Transaction_payment{
+		Payment: file.Filename,
+	}
+
+	// Upload the file to specific dst.
+	c.SaveUploadedFile(file, "car_photo/"+file.Filename)
+
+	err, message := cr.cr.UpdateTransactionPayment(id, Transaction)
+	if err != nil {
+		c.JSON(500, map[string]any{
+			"message": message,
+			"error":   err.Error(),
+		})
+		return
+	}
+
 	c.JSON(200, map[string]any{
 		"message": message,
 	})

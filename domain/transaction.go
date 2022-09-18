@@ -26,3 +26,7 @@ type Transaction_get struct {
 	Car_name    string
 	Cc          int
 }
+
+type Transaction_payment struct {
+	Payment string
+}

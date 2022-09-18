@@ -118,7 +118,7 @@ func (cr *Controller) FindByIDCar(c *gin.Context) {
 }
 
 func (cr *Controller) UpdateCar(c *gin.Context) {
-	// domain user
+
 	var car domain.Car
 	// param id
 	id := c.Param("id")
@@ -171,7 +171,6 @@ func (cr *Controller) UpdateCar(c *gin.Context) {
 		return
 	}
 
-	// update user
 	err, message := cr.cr.UpdateCar(id, car)
 	if err != nil {
 		c.JSON(500, map[string]any{
@@ -180,19 +179,18 @@ func (cr *Controller) UpdateCar(c *gin.Context) {
 		})
 		return
 	}
-	// return success update user
+
 	c.JSON(200, map[string]any{
 		"message": message,
 	})
 }
 
 func (cr *Controller) DeleteCar(c *gin.Context) {
-	// domain user
+
 	car := domain.Car{}
 	// param id
 	id := c.Param("id")
 
-	// delete user
 	err, message := cr.cr.DeleteCar(id, car)
 	if err != nil {
 		c.JSON(500, map[string]any{
@@ -201,7 +199,7 @@ func (cr *Controller) DeleteCar(c *gin.Context) {
 		})
 		return
 	}
-	// return success delete user
+
 	c.JSON(200, map[string]any{
 		"message": message,
 	})
