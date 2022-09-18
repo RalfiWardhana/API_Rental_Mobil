@@ -201,7 +201,7 @@ func (cr *Controller) UpdateTransactionPayment(c *gin.Context) {
 	}
 
 	// Upload the file to specific dst.
-	c.SaveUploadedFile(file, "car_photo/"+file.Filename)
+	c.SaveUploadedFile(file, "payment/"+file.Filename)
 
 	err, message := cr.cr.UpdateTransactionPayment(id, Transaction)
 	if err != nil {
