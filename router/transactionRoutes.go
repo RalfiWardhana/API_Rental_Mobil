@@ -20,7 +20,7 @@ func TransactionRoute(router *gin.Engine) {
 	router.GET("/transactions", gate.WithAuthentication(repoUsr), contTransaction.FindAllTransaction)
 	router.GET("/transaction/:id", gate.WithAuthentication(repoUsr), contTransaction.FindByIDTransaction)
 	router.POST("/transaction", gate.WithAuthentication(repoUsr), contTransaction.CreateTransaction)
-	router.PUT("/transaction/:id", contTransaction.UpdateTransaction)
-	router.PUT("/transaction-payment/:id", contTransaction.UpdateTransactionPayment)
+	router.PUT("/transaction/:id", gate.WithAuthentication(repoUsr), contTransaction.UpdateTransaction)
+	router.PUT("/transaction-payment/:id", gate.WithAuthentication(repoUsr), contTransaction.UpdateTransactionPayment)
 	router.DELETE("/transaction/:id", gate.WithAuthentication(repoUsr), contTransaction.DeleteTransaction)
 }
